@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var obs: ImageView
     private lateinit var ll_lay: LinearLayout
 
-    // awdawd
+    // shut up
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
