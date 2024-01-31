@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#515151"
+    tools:context=".MainActivity">
+
+
+    <View
+        android:id="@+id/measur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#515151"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/ll_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+    <ImageView
+        android:id="@+id/pro_ball"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:src="@drawable/ball"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/obs_1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/deets_1"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:gravity="center"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/deets_2"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="312dp"
+        android:background="@color/white"
+        android:gravity="center" />
+
+
+</RelativeLayout>
