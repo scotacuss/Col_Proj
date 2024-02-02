@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#515151"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main_view">
+
 
 
     <View
         android:id="@+id/measur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#515151"
+        android:background="#80000000"
         android:gravity="center" />
 
     <ImageView
@@ -40,11 +42,6 @@
         android:background="@color/white"
         android:gravity="center" />
 
-    <RelativeLayout
-        android:id="@+id/ll_main_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
 
 
 </RelativeLayout>

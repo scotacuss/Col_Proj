@@ -27,8 +27,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var details_1: TextView
     private lateinit var details_2: TextView
     private lateinit var meas: View
-    private lateinit var obs: ImageView
-    private lateinit var ll_lay: RelativeLayout
+    private lateinit var mv:RelativeLayout
+
+
+    private lateinit var ll_lay: LinearLayout
 
     fun createObs(x: Float, y:Float, ht:Int, wd:Int): ImageView {
         var obs = ImageView(this)
@@ -36,10 +38,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         obs.x = x
         obs.y = y
         obs.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
-        ll_lay.addView(obs)
+        mv.addView(obs)
         return obs
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,19 +52,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         details_1 = findViewById(R.id.deets_1)
         details_2 = findViewById(R.id.deets_2)
         meas = findViewById(R.id.measur)
-        ll_lay = findViewById(R.id.ll_main_layout)
+        mv = findViewById(R.id.main_view)
 
         setUpSensorStuff()
 
 
         // Obstacles
 
-        var obs = ImageView(this)
-        obs.layoutParams = LinearLayout.LayoutParams(200,100)
-        obs.x = 500F
-        obs.y = 1000F
-        obs.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
-        ll_lay.addView(obs)
+
+        var obs1 = createObs(300F,300F,200,200)
+        var obs2 = createObs(600F,600F,100,100)
     }
 
 
