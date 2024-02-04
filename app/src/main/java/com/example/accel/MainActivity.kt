@@ -10,6 +10,7 @@ import android.hardware.SensorManager
 import android.media.Image
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -29,12 +30,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var meas: View
     private lateinit var mv: RelativeLayout
 
-    lateinit var obs1: ImageView
+    lateinit var obs1: Array<Any>
 
     private lateinit var ll_lay: LinearLayout
 
 
-    fun createObs(x: Float, y: Float, ht: Int, wd: Int, shape: String = "square"): ImageView {
+    fun createObs(x: Float, y: Float, ht: Int, wd: Int, dampning:Double = 0.8, shape: String = "square"): Array<Any> {
         var obs = ImageView(this)
         if (shape == "circle") {
             obs.setImageResource(R.drawable.circ_obs)
@@ -46,36 +47,51 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         obs.y = y
 
         mv.addView(obs)
-        return obs
+        return arrayOf(obs,dampning)
     }
 
 
-    fun colDetec(projectile: ImageView, obs: ImageView, obs_shape: String = "square"){
-        val pro_x = projectile.x + (projectile.width / 2)
-        val pro_y = projectile.y + (projectile.height / 2)
-        val obs_R = obs.x + obs.width
-        val obs_B = obs.y + obs.height
+    fun colDetec(obs: ImageView, obsDamp: Double) {
+        val x = ball.x + (ball.width / 2)
+        val y = ball.y + (ball.height / 2)
+        val x1 = obs.x
+        val y1 = obs.y
+        val x2 = obs.x + obs.width
+        val y2 = obs.y + obs.height
 
-
-            if (pro_y > obs.y && pro_y < obs_B && (obs.x - pro_x) < projectile.width/2){
-                projectile.x -= 1
-                 }
-            else if (pro_y > obs.y && pro_y < obs_B && (pro_x - obs_R) < projectile.width/2){
-                projectile.x += 1
+        if (x1 < x && x < x2){
+            if (y < y1){
+                if (y1-y < ball.height/2){
+                    ball.y -= 1
+                    yVelo = (-yVelo * obsDamp).toFloat()
+                }
             }
-            else if (pro_x > obs.x && pro_x < obs_R && (obs.y - pro_y) < projectile.height/2){
-                projectile.y -= 1
-            }
-            else if (pro_x > obs.x && pro_x < obs_R && (pro_y - obs_B) < projectile.width/2){
-                projectile.y += 1
+            else if(y-y2 < ball.height/2){
+                ball.y += 1
+                yVelo = (-yVelo*obsDamp).toFloat()
             }
         }
+        else if (y1 < y && y < y2) {
+            if (x < x1){
+                if(x1-x < ball.width/2){
+                    ball.x -= 1
+                    xVelo = (-xVelo * obsDamp).toFloat()
+                }
+            }
+            else if (x-x2 < ball.width/2){
+                ball.x += 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+            }
+        }
+    }
 
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         ball = findViewById(R.id.pro_ball)
@@ -88,7 +104,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
         // Obstacles
-        obs1 = createObs(500F, 900F, 100, 700)
+        obs1 = createObs(300F, 900F, 500, 500, 0.8)
     }
 
 
@@ -99,8 +115,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             sensorManager.registerListener(
                 this,
                 it,
-                SensorManager.SENSOR_DELAY_FASTEST,
-                SensorManager.SENSOR_DELAY_FASTEST
+                SensorManager.SENSOR_DELAY_GAME,
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
     }
@@ -111,16 +127,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private var xVelo = 0F
     private var yVelo = 0F
 
-    private val terminal_velo = 10
+    private val terminal_velo = 40
     private val dampner = 0.8F // coefficient of restitution
 
-    fun screenBoundaryCollision(
-        coord: Float,
-        minBound: Float,
-        maxBound: Float,
-        velocity: Float
-
-    ): Pair<Float, Float> {
+    fun screenBoundaryCollision(coord: Float, minBound: Float, maxBound: Float, velocity: Float): Pair<Float, Float> {
         val newCoord = when {
             coord > maxBound -> maxBound
             coord < minBound -> minBound
@@ -129,6 +139,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val newVelocity = if (newCoord != coord) -velocity * dampner else velocity
         return Pair(newCoord, newVelocity)
     }
+
+
 
 
     @SuppressLint("SetTextI18n")
@@ -141,19 +153,31 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val bottomBounds = (meas.bottom - ball.height).toFloat()
 
 
-            xAccel = sides / 100
-            yAccel = upDown / 100
+            xAccel = sides / 5
+            yAccel = upDown / 5
 
             xVelo += xAccel
             yVelo += yAccel
 
+            colDetec(obs1[0] as ImageView, obs1[1] as Double)
+
 
             if (xVelo > terminal_velo || xVelo < -terminal_velo) {
+                if (xVelo < 0){
+                    xVelo = -(terminal_velo + 0.5).toFloat()
+                }
+                else{
                 xVelo = (terminal_velo - 0.5).toFloat()
+                }
             }
 
             if (yVelo > terminal_velo || yVelo < -terminal_velo) {
-                yVelo = (terminal_velo - 0.5).toFloat()
+                if (yVelo < 0){
+                    yVelo = -(terminal_velo + 0.5).toFloat()
+                }
+                else {
+                    yVelo = (terminal_velo - 0.5).toFloat()
+                }
             }
 
 
@@ -172,7 +196,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 ball.y = newY
                 yVelo = newYVelo
 
-                colDetec(ball,obs1)
             }
 
 
