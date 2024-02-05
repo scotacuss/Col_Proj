@@ -51,103 +51,121 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         obs.y = y
 
         mv.addView(obs)
-        return arrayOf(obs,dampning)
+        return arrayOf(obs,dampning,shape)
     }
 
 
 
 
-//    fun colDetec(obs: ImageView, obsDamp: Double) {
-//        val x = ball.x + (ball.width / 2)
-//        val y = ball.y + (ball.height / 2)
-//        val x1 = obs.x
-//        val y1 = obs.y
-//        val x2 = obs.x + obs.width
-//        val y2 = obs.y + obs.height
-//
-//        if (x1 < x && x < x2){
-//            if (y < y1){
-//                if (y < y1 && y1-y < ball.height/2){
-//                    ball.y -= 1
-//                    yVelo = (-yVelo * obsDamp).toFloat()
-//                }
-//            }
-//            else if(y-y2 < ball.height/2){
-//                ball.y += 1
-//                yVelo = (-yVelo*obsDamp).toFloat()
-//            }
-//        }
-//        else if (y1 < y && y < y2) {
-//            if (x < x1){
-//                if(x1-x < ball.width/2){
-//                    ball.x -= 1
-//                    xVelo = (-xVelo * obsDamp).toFloat()
-//                }
-//            }
-//            else if (x-x2 < ball.width/2){
-//                ball.x += 1
-//                xVelo = (-xVelo*obsDamp).toFloat()
-//            }
-//        }
-//        else if(x < x1 && y < y1){
-//            if (ball.width/2 > (sqrt((x1-x).pow(2) + (y1-y).pow(2))).absoluteValue){
-//                ball.x -= 1
-//                ball.y -= 1
-//                xVelo = (-xVelo*obsDamp).toFloat()
-//                yVelo = (-xVelo * obsDamp).toFloat()
-//            }
-//        }
-//        else if(x > x2 && y < y1){
-//            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y1-y).pow(2))).absoluteValue){
-//                ball.x += 1
-//                ball.y -= 1
-//                xVelo = (-xVelo*obsDamp).toFloat()
-//                yVelo = (-xVelo * obsDamp).toFloat()
-//            }
-//        }
-//        else if(x < x1 && y > y2){
-//            if (ball.width/2 > (sqrt((x1 - x).pow(2) + (y-y2).pow(2))).absoluteValue){
-//                ball.x -= 1
-//                ball.y += 1
-//                xVelo = (-xVelo*obsDamp).toFloat()
-//                yVelo = (-xVelo * obsDamp).toFloat()
-//            }
-//        }
-//        else if(x > x2 && y > y2){
-//            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y-y2).pow(2))).absoluteValue){
-//                ball.x += 1
-//                ball.y += 1
-//                xVelo = (-xVelo*obsDamp).toFloat()
-//                yVelo = (-xVelo * obsDamp).toFloat()
-//            }
-//        }
-//    }
-
-    fun colDetec(obs: ImageView, obsDamp: Double) {
-        // ChatGPT
-        val ballCenterX = ball.x + (ball.width / 2)
-        val ballCenterY = ball.y + (ball.height / 2)
-
+    fun ObeseleteColDetec(obs: ImageView, obsDamp: Double) {
+        val x = ball.x + (ball.width / 2)
+        val y = ball.y + (ball.height / 2)
         val x1 = obs.x
         val y1 = obs.y
         val x2 = obs.x + obs.width
         val y2 = obs.y + obs.height
 
-        val deltaX = ballCenterX - max(x1, min(ballCenterX, x2))
-        val deltaY = ballCenterY - max(y1, min(ballCenterY, y2))
-
-        if (deltaX.pow(2) + deltaY.pow(2) < (ball.width / 2).toDouble().pow(2)) {
-            // Collision detected
-            if (deltaX.toDouble() != 0.0) {
-                ball.x += if (deltaX < 0) -1 else 1
-                xVelo = (-xVelo * obsDamp).toFloat()
+        if (x1 < x && x < x2){
+            if (y < y1){
+                if (y < y1 && y1-y < ball.height/2){
+                    ball.y -= 1
+                    yVelo = (-yVelo * obsDamp).toFloat()
+                }
             }
-            if (deltaY.toDouble() != 0.0) {
-                ball.y += if (deltaY < 0) -1 else 1
-                yVelo = (-yVelo * obsDamp).toFloat()
+            else if(y-y2 < ball.height/2){
+                ball.y += 1
+                yVelo = (-yVelo*obsDamp).toFloat()
+            }
+        }
+        else if (y1 < y && y < y2) {
+            if (x < x1){
+                if(x1-x < ball.width/2){
+                    ball.x -= 1
+                    xVelo = (-xVelo * obsDamp).toFloat()
+                }
+            }
+            else if (x-x2 < ball.width/2){
+                ball.x += 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+            }
+        }
+        else if(x < x1 && y < y1){
+            if (ball.width/2 > (sqrt((x1-x).pow(2) + (y1-y).pow(2))).absoluteValue){
+                ball.x -= 1
+                ball.y -= 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+                yVelo = (-xVelo * obsDamp).toFloat()
+            }
+        }
+        else if(x > x2 && y < y1){
+            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y1-y).pow(2))).absoluteValue){
+                ball.x += 1
+                ball.y -= 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+                yVelo = (-xVelo * obsDamp).toFloat()
+            }
+        }
+        else if(x < x1 && y > y2){
+            if (ball.width/2 > (sqrt((x1 - x).pow(2) + (y-y2).pow(2))).absoluteValue){
+                ball.x -= 1
+                ball.y += 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+                yVelo = (-xVelo * obsDamp).toFloat()
+            }
+        }
+        else if(x > x2 && y > y2){
+            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y-y2).pow(2))).absoluteValue){
+                ball.x += 1
+                ball.y += 1
+                xVelo = (-xVelo*obsDamp).toFloat()
+                yVelo = (-xVelo * obsDamp).toFloat()
             }
         }
     }
+
+    fun colDetec(obs: Array<Any>, shape: String = "square") {
+        // ChatGPT
+        val obsIV: ImageView = obs[0] as ImageView
+        val obsDamp: Double = obs[1] as Double
+        val obsShape: String = obs[2] as String
+
+        val ballCenterX = ball.x + (ball.width / 2)
+        val ballCenterY = ball.y + (ball.height / 2)
+
+        val x1 = obsIV.x
+        val y1 = obsIV.y
+        val xSq = obsIV.x + obsIV.width
+        val ySq = obsIV.y + obsIV.height
+        val xCi = obsIV.x + obsIV.width/2
+        val yCi = obsIV.y + obsIV.height/2
+
+
+        if (obsShape == "square"){
+            val deltaX = ballCenterX - max(x1, min(ballCenterX, xSq))
+            val deltaY = ballCenterY - max(y1, min(ballCenterY, ySq))
+
+            if (deltaX.pow(2) + deltaY.pow(2) < (ball.width / 2).toDouble().pow(2)) {
+                // Collision detected
+                if (deltaX.toDouble() != 0.0) {
+                    ball.x += if (deltaX < 0) -1 else 1
+                    xVelo = (-xVelo * obsDamp).toFloat()
+                }
+                if (deltaY.toDouble() != 0.0) {
+                    ball.y += if (deltaY < 0) -1 else 1
+                    yVelo = (-yVelo * obsDamp).toFloat()
+                }
+            }
+        }
+        else {
+            val deltaX = ballCenterX - xCi
+            val deltaY = ballCenterY - yCi
+
+            if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
+            //TODO
+            }
+        }
+    }
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -167,7 +185,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
         // Obstacles
-        obs1 = createObs(300F, 900F, 500, 500, 0.8)
+        obs1 = createObs(300F, 900F, 300, 300, 0.8)
     }
 
 
@@ -226,7 +244,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             xVelo += xAccel
             yVelo += yAccel
 
-            colDetec(obs1[0] as ImageView, obs1[1] as Double)
+            colDetec(obs1)
 
 
             if (xVelo > terminal_velo || xVelo < -terminal_velo) {
