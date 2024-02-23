@@ -9,6 +9,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.Image
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.view.VelocityTracker
 import android.view.View
 import android.view.WindowManager
 import android.widget.GridLayout
@@ -33,10 +35,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var details_2: TextView
     private lateinit var meas: View
     private lateinit var mv: RelativeLayout
+    private lateinit var finLine: View
 
+    private lateinit var timer: CountDownTimer
     lateinit var obs1: Array<Any>
 
-    private lateinit var ll_lay: LinearLayout
+    var timeLeft: Int = 5
+
 
 
     fun createObs(x: Float, y: Float, ht: Int, wd: Int, dampning:Double = 0.8, shape: String = "square"): Array<Any> {
@@ -180,12 +185,35 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         details_2 = findViewById(R.id.deets_2)
         meas = findViewById(R.id.measur)
         mv = findViewById(R.id.main_view)
+        finLine = findViewById(R.id.finish_line)
 
         setUpSensorStuff()
 
-
         // Obstacles
         obs1 = createObs(300F, 900F, 300, 300, 0.8)
+
+        timer = object  : CountDownTimer(6000,1000){
+            override fun onTick(millisUntilFinished: Long) {
+                details_1.text = timeLeft.toString()
+                timeLeft -= 1
+
+            }
+
+            override fun onFinish() {
+                timeLeft = 5
+                timer.start()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        timer.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        timer.cancel()
     }
 
 
@@ -281,12 +309,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 ball.y = newY
                 yVelo = newYVelo
 
+                if(ball.y + ball.width/2 > finLine.y){
+                    ball.y = meas.y + ball.width
+                    ball.x = (finLine.width/2).toFloat()
+                    xVelo = 0F
+                    yVelo = 0F
+                }
+
             }
 
 //            (obs1[0] as ImageView)
 
 
-            details_1.text = "x Velocity ${2}\n"
+
             details_2.text = "ball x ${ball.x}\nball y ${ball.y}\n"
         }
     }
