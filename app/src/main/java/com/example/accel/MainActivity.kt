@@ -12,7 +12,10 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.VelocityTracker
 import android.view.View
+import android.view.View.OnClickListener
+import android.view.View.VISIBLE
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -32,10 +35,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var ball: ImageView
     private lateinit var details_1: TextView
-    private lateinit var details_2: TextView
     private lateinit var meas: View
     private lateinit var mv: RelativeLayout
     private lateinit var finLine: View
+    private lateinit var button1: Button
+
+
+
 
     private lateinit var timer: CountDownTimer
     lateinit var obs1: Array<Any>
@@ -62,71 +68,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-    fun ObeseleteColDetec(obs: ImageView, obsDamp: Double) {
-        val x = ball.x + (ball.width / 2)
-        val y = ball.y + (ball.height / 2)
-        val x1 = obs.x
-        val y1 = obs.y
-        val x2 = obs.x + obs.width
-        val y2 = obs.y + obs.height
-
-        if (x1 < x && x < x2){
-            if (y < y1){
-                if (y < y1 && y1-y < ball.height/2){
-                    ball.y -= 1
-                    yVelo = (-yVelo * obsDamp).toFloat()
-                }
-            }
-            else if(y-y2 < ball.height/2){
-                ball.y += 1
-                yVelo = (-yVelo*obsDamp).toFloat()
-            }
-        }
-        else if (y1 < y && y < y2) {
-            if (x < x1){
-                if(x1-x < ball.width/2){
-                    ball.x -= 1
-                    xVelo = (-xVelo * obsDamp).toFloat()
-                }
-            }
-            else if (x-x2 < ball.width/2){
-                ball.x += 1
-                xVelo = (-xVelo*obsDamp).toFloat()
-            }
-        }
-        else if(x < x1 && y < y1){
-            if (ball.width/2 > (sqrt((x1-x).pow(2) + (y1-y).pow(2))).absoluteValue){
-                ball.x -= 1
-                ball.y -= 1
-                xVelo = (-xVelo*obsDamp).toFloat()
-                yVelo = (-xVelo * obsDamp).toFloat()
-            }
-        }
-        else if(x > x2 && y < y1){
-            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y1-y).pow(2))).absoluteValue){
-                ball.x += 1
-                ball.y -= 1
-                xVelo = (-xVelo*obsDamp).toFloat()
-                yVelo = (-xVelo * obsDamp).toFloat()
-            }
-        }
-        else if(x < x1 && y > y2){
-            if (ball.width/2 > (sqrt((x1 - x).pow(2) + (y-y2).pow(2))).absoluteValue){
-                ball.x -= 1
-                ball.y += 1
-                xVelo = (-xVelo*obsDamp).toFloat()
-                yVelo = (-xVelo * obsDamp).toFloat()
-            }
-        }
-        else if(x > x2 && y > y2){
-            if (ball.width/2 > (sqrt((x-x2).pow(2) + (y-y2).pow(2))).absoluteValue){
-                ball.x += 1
-                ball.y += 1
-                xVelo = (-xVelo*obsDamp).toFloat()
-                yVelo = (-xVelo * obsDamp).toFloat()
-            }
-        }
-    }
 
     fun colDetec(obs: Array<Any>, shape: String = "square") {
         // ChatGPT
@@ -182,15 +123,32 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         ball = findViewById(R.id.pro_ball)
         details_1 = findViewById(R.id.deets_1)
-        details_2 = findViewById(R.id.deets_2)
         meas = findViewById(R.id.measur)
         mv = findViewById(R.id.main_view)
         finLine = findViewById(R.id.finish_line)
+        button1 = findViewById<Button>(R.id.fail_win)
+
+
+
+
+        button1.setOnClickListener{
+            ball.y = meas.y + ball.width
+            ball.x = (finLine.width/2).toFloat()
+            xVelo = 0F
+            yVelo = 0F
+            ball.visibility = VISIBLE
+            button1.visibility = View.GONE
+
+        }
+        button1.visibility = View.GONE
 
         setUpSensorStuff()
 
         // Obstacles
-        obs1 = createObs(300F, 900F, 300, 300, 0.8)
+        obs1 = createObs(400F, 900F, 250, 250, 0.8)
+
+
+        button1.bringToFront()
 
         timer = object  : CountDownTimer(6000,1000){
             override fun onTick(millisUntilFinished: Long) {
@@ -215,6 +173,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onStop()
         timer.cancel()
     }
+
+
 
 
 
@@ -310,19 +270,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 yVelo = newYVelo
 
                 if(ball.y + ball.width/2 > finLine.y){
-                    ball.y = meas.y + ball.width
-                    ball.x = (finLine.width/2).toFloat()
-                    xVelo = 0F
-                    yVelo = 0F
+                    ball.visibility = View.GONE
+                    button1.visibility = View.VISIBLE
                 }
 
             }
 
-//            (obs1[0] as ImageView)
 
 
 
-            details_2.text = "ball x ${ball.x}\nball y ${ball.y}\n"
+
         }
     }
 
@@ -336,3 +293,5 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onDestroy()
     }
 }
+
+
