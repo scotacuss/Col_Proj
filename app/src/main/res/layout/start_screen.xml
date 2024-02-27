@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".MainActivity"
+    android:id="@+id/start_screen_v">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:text="SenProMo"
+        android:textColor="@color/white"
+        android:textSize="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:gravity="center"
+        android:text="A game by Scott"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/strt_but"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:hint="Play"
+        android:textColorHint="@color/white"
+        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/finish_line_h"
+        />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/finish_line_h" />
+
+
+</RelativeLayout>

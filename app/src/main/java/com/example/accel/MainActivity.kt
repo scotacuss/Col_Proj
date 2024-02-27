@@ -23,6 +23,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import java.math.RoundingMode
 import kotlin.math.absoluteValue
 import kotlin.math.max
 import kotlin.math.min
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var mv: RelativeLayout
     private lateinit var finLine: View
     private lateinit var button1: Button
+    private lateinit var start_button: Button
 
 
 
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var timer: CountDownTimer
     lateinit var obs1: Array<Any>
 
-    var timeLeft: Int = 5
+    var timeLeft: Double = 5.00
 
 
 
@@ -127,6 +129,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         mv = findViewById(R.id.main_view)
         finLine = findViewById(R.id.finish_line)
         button1 = findViewById<Button>(R.id.fail_win)
+//        start_button = findViewById<Button>(R.id.strt_but)
+//
+//        start_button.setOnClickListener {
+//            setContentView(R.layout.activity_main)
+//        }
 
 
 
@@ -137,8 +144,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             xVelo = 0F
             yVelo = 0F
             ball.visibility = VISIBLE
+            timeLeft = 5.00
+            timer.start()
             button1.visibility = View.GONE
-
         }
         button1.visibility = View.GONE
 
@@ -150,15 +158,29 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         button1.bringToFront()
 
-        timer = object  : CountDownTimer(6000,1000){
+        timer = object  : CountDownTimer(5400,100){
             override fun onTick(millisUntilFinished: Long) {
-                details_1.text = timeLeft.toString()
-                timeLeft -= 1
+                details_1.text = timeLeft.toBigDecimal().setScale(1, RoundingMode.UP).toDouble().toString()
+                timeLeft -= 0.1
+                if (timeLeft < -0.1){
+                    timer.cancel()
+                    details_1.visibility = View.GONE
+                    ball.visibility = View.GONE
+                    button1.visibility = View.VISIBLE
+
+                }
+                if (ball.visibility == View.GONE){
+                    details_1.visibility = View.GONE
+                    timer.cancel()
+                }
+                else{
+                    details_1.visibility = View.VISIBLE
+                }
 
             }
 
             override fun onFinish() {
-                timeLeft = 5
+                timeLeft = 5.00
                 timer.start()
             }
         }

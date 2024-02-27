@@ -32,7 +32,7 @@
         android:id="@+id/finish_line"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginTop="680dp"
+        android:layout_marginTop="700dp"
         android:src="@drawable/finish_line" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="280dp"
         android:gravity="center"
-        android:hint="haha"
+        android:hint="5.00"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="30dp"/>
