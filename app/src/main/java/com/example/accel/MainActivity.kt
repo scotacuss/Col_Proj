@@ -1,5 +1,6 @@
 package com.example.accel
 
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -25,10 +26,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import java.math.RoundingMode
 import kotlin.math.absoluteValue
+import kotlin.math.acos
+import kotlin.math.asin
+import kotlin.math.atan
+import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlin.math.tan
 
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
@@ -41,78 +48,22 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var finLine: View
     private lateinit var button1: Button
     private lateinit var start_button: Button
-
-
-
+    private lateinit var deets: TextView
 
     private lateinit var timer: CountDownTimer
+
     lateinit var obs1: Array<Any>
 
     var timeLeft: Double = 5.00
 
+    private var xAccel = 0F
+    private var yAccel = 0F
+    var xVelo = 0F
+    var yVelo = 0F
+    val terminal_velo = 40
+    val dampner = 0.8F // coefficient of restitution
 
 
-    fun createObs(x: Float, y: Float, ht: Int, wd: Int, dampning:Double = 0.8, shape: String = "square"): Array<Any> {
-        var obs = ImageView(this)
-        if (shape == "circle") {
-            obs.setImageResource(R.drawable.circ_obs)
-        } else {
-            obs.setBackgroundColor(Color.parseColor("#000000"))
-        }
-        obs.layoutParams = LinearLayout.LayoutParams(wd, ht)
-        obs.x = x
-        obs.y = y
-
-        mv.addView(obs)
-        return arrayOf(obs,dampning,shape)
-    }
-
-
-
-
-
-    fun colDetec(obs: Array<Any>, shape: String = "square") {
-        // ChatGPT
-        val obsIV: ImageView = obs[0] as ImageView
-        val obsDamp: Double = obs[1] as Double
-        val obsShape: String = obs[2] as String
-
-        val ballCenterX = ball.x + (ball.width / 2)
-        val ballCenterY = ball.y + (ball.height / 2)
-
-        val x1 = obsIV.x
-        val y1 = obsIV.y
-        val xSq = obsIV.x + obsIV.width
-        val ySq = obsIV.y + obsIV.height
-        val xCi = obsIV.x + obsIV.width/2
-        val yCi = obsIV.y + obsIV.height/2
-
-
-        if (obsShape == "square"){
-            val deltaX = ballCenterX - max(x1, min(ballCenterX, xSq))
-            val deltaY = ballCenterY - max(y1, min(ballCenterY, ySq))
-
-            if (deltaX.pow(2) + deltaY.pow(2) < (ball.width / 2).toDouble().pow(2)) {
-                // Collision detected
-                if (deltaX.toDouble() != 0.0) {
-                    ball.x += if (deltaX < 0) -1 else 1
-                    xVelo = (-xVelo * obsDamp).toFloat()
-                }
-                if (deltaY.toDouble() != 0.0) {
-                    ball.y += if (deltaY < 0) -1 else 1
-                    yVelo = (-yVelo * obsDamp).toFloat()
-                }
-            }
-        }
-        else {
-            val deltaX = ballCenterX - xCi
-            val deltaY = ballCenterY - yCi
-
-            if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
-            //TODO
-            }
-        }
-    }
 
 
     @SuppressLint("MissingInflatedId")
@@ -121,19 +72,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_main)
         window.addFlags(
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        ball = findViewById(R.id.pro_ball)
+
         details_1 = findViewById(R.id.deets_1)
+        ball = findViewById(R.id.pro_ball)
         meas = findViewById(R.id.measur)
         mv = findViewById(R.id.main_view)
         finLine = findViewById(R.id.finish_line)
-        button1 = findViewById<Button>(R.id.fail_win)
-//        start_button = findViewById<Button>(R.id.strt_but)
-//
-//        start_button.setOnClickListener {
-//            setContentView(R.layout.activity_main)
-//        }
+        button1 = findViewById(R.id.fail_win)
+        deets = findViewById(R.id.debug)
 
 
 
@@ -150,24 +97,35 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         button1.visibility = View.GONE
 
+        obs1 = createObs(this,mv,200F, 500F, 700, 700, 0.8, "square")
+
+
+//        setContentView(R.layout.start_screen)
+//        start_button = findViewById(R.id.strt_but)
+//
+//        start_button.setOnClickListener {
+//            setContentView(R.layout.activity_main)
+//
+//        }
+
         setUpSensorStuff()
 
+
         // Obstacles
-        obs1 = createObs(400F, 900F, 250, 250, 0.8)
 
 
         button1.bringToFront()
+
 
         timer = object  : CountDownTimer(5400,100){
             override fun onTick(millisUntilFinished: Long) {
                 details_1.text = timeLeft.toBigDecimal().setScale(1, RoundingMode.UP).toDouble().toString()
                 timeLeft -= 0.1
-                if (timeLeft < -0.1){
+                if (timeLeft < -10000.0){
                     timer.cancel()
                     details_1.visibility = View.GONE
                     ball.visibility = View.GONE
                     button1.visibility = View.VISIBLE
-
                 }
                 if (ball.visibility == View.GONE){
                     details_1.visibility = View.GONE
@@ -176,9 +134,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 else{
                     details_1.visibility = View.VISIBLE
                 }
-
             }
-
             override fun onFinish() {
                 timeLeft = 5.00
                 timer.start()
@@ -195,6 +151,89 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onStop()
         timer.cancel()
     }
+
+    fun colDetec(obs: Array<Any>) {
+        // ChatGPT
+        val obsIV: ImageView = obs[0] as ImageView
+        val obsDamp: Double = obs[1] as Double
+        val obsShape: String = obs[2] as String
+
+        var ballCenterX = ball.x + (ball.width / 2)
+        var ballCenterY = ball.y + (ball.height / 2)
+
+        val x1 = obsIV.x
+        val y1 = obsIV.y
+        val xSq = obsIV.x + obsIV.width
+        val ySq = obsIV.y + obsIV.height
+        val xCi = obsIV.x + obsIV.width/2
+        val yCi = obsIV.y + obsIV.height/2
+
+        if (obsShape == "square"){
+            val deltaX = ballCenterX - max(x1, min(ballCenterX, xSq))
+            val deltaY = ballCenterY - max(y1, min(ballCenterY, ySq))
+
+            if (deltaX.pow(2) + deltaY.pow(2) < (ball.width / 2).toDouble().pow(2)) {
+                // Collision detected
+                if (deltaX.toDouble() != 0.0) {
+                    xVelo = (-xVelo * obsDamp).toFloat()
+                }
+                if (deltaY.toDouble() != 0.0) {
+                    yVelo = (-yVelo * obsDamp).toFloat()
+                }
+            }
+        }
+//        else {
+//            val deltaX = ballCenterX - xCi
+//            val deltaY = ballCenterY - yCi
+//            var offset = 0
+//            val ballR = ball.width/2
+//            val obsR = obsIV.width/2
+//
+//            if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
+//                if (ballCenterY > yCi && ballCenterX > xCi) { // bottom right
+//                    offset = 180
+//                }
+//                else if (ballCenterY > yCi){ //bottom left
+//                    offset = 270
+//                }
+//                else if (ballCenterX > xCi){ // top right
+//                    offset = 90
+//                }
+//
+//                val hyp = ballR+obsR
+//                val thetaPos = asin((yCi-ballCenterY)/(hyp))
+//
+//                var oppXvelo = -xVelo
+//                var oppYvelo = -yVelo
+//
+//                val thetaVel = atan(yVelo.absoluteValue/xVelo.absoluteValue)
+//
+//                val thetaTrue = (thetaPos+thetaVel)/2
+//
+//                val TotalVelo = (xVelo.absoluteValue + yVelo.absoluteValue)*0.9
+//
+//
+//
+//                if (ballCenterX < xCi) {
+//                    xVelo = (((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+//                }
+//                else if (ballCenterX > xCi) {
+//                    xVelo = (-((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+//                }
+//                if (ballCenterY < yCi) {
+//                    yVelo = (-(TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+//                }
+//                else if (ballCenterY > yCi) {
+//                    yVelo = -((TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+//                }
+//
+//
+//            }
+//        }
+
+    }
+
+
 
 
 
@@ -215,14 +254,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    private var xAccel = 0F
-    private var yAccel = 0F
 
-    private var xVelo = 0F
-    private var yVelo = 0F
-
-    private val terminal_velo = 40
-    private val dampner = 0.8F // coefficient of restitution
 
     fun screenBoundaryCollision(coord: Float, minBound: Float, maxBound: Float, velocity: Float): Pair<Float, Float> {
         val newCoord = when {
@@ -238,71 +270,60 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceType")
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            val sides = event.values[0]
-            val upDown = event.values[1]
 
-            val rightBounds = (meas.right - ball.width).toFloat()
-            val bottomBounds = (meas.bottom - ball.height).toFloat()
+            if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+                val sides = event.values[0]
+                val upDown = event.values[1]
 
-
-            xAccel = sides / 5
-            yAccel = upDown / 5
-
-            xVelo += xAccel
-            yVelo += yAccel
-
-            colDetec(obs1)
+                val rightBounds = (meas.right - ball.width).toFloat()
+                val bottomBounds = (meas.bottom - ball.height).toFloat()
 
 
-            if (xVelo > terminal_velo || xVelo < -terminal_velo) {
-                if (xVelo < 0){
-                    xVelo = -(terminal_velo + 0.5).toFloat()
+                xAccel = sides / 5
+                yAccel = upDown / 5
+
+                xVelo += xAccel*(1-(xVelo/terminal_velo))
+                yVelo += yAccel*(1-(yVelo/terminal_velo))
+
+                colDetec(obs1)
+
+                val obsIV: ImageView = obs1[0] as ImageView
+
+                val hyp = (ball.width/2)+(obsIV.width/2)
+                val thetaPos = asin((((obsIV.width/2)+obsIV.y)-((ball.width/2)+ball.y))/(hyp))
+                deets.text = (thetaPos*180/3.14).toString()
+
+
+
+
+
+                ball.apply {
+
+                    ball.x -= xVelo.toFloat()
+                    ball.y += yVelo.toFloat()
+
+
+                    // Screen Boundary Collision Logic
+                    val (newX, newXVelo) = screenBoundaryCollision(ball.x, 0F, rightBounds, xVelo)
+                    ball.x = newX
+                    xVelo = newXVelo
+
+                    val (newY, newYVelo) = screenBoundaryCollision(ball.y, 0F, bottomBounds, yVelo)
+                    ball.y = newY
+                    yVelo = newYVelo
+
+//                    if (ball.y + ball.width / 2 > finLine.y) {
+//                        ball.visibility = View.GONE
+//                        button1.visibility = View.VISIBLE
+//                    }
+
                 }
-                else{
-                xVelo = (terminal_velo - 0.5).toFloat()
-                }
-            }
 
-            if (yVelo > terminal_velo || yVelo < -terminal_velo) {
-                if (yVelo < 0){
-                    yVelo = -(terminal_velo + 0.5).toFloat()
-                }
-                else {
-                    yVelo = (terminal_velo - 0.5).toFloat()
-                }
-            }
-
-
-            ball.apply {
-
-                ball.x -= xVelo.toFloat()
-                ball.y += yVelo.toFloat()
-
-
-                // Screen Boundary Collision Logic
-                val (newX, newXVelo) = screenBoundaryCollision(ball.x, 0F, rightBounds, xVelo)
-                ball.x = newX
-                xVelo = newXVelo
-
-                val (newY, newYVelo) = screenBoundaryCollision(ball.y, 0F, bottomBounds, yVelo)
-                ball.y = newY
-                yVelo = newYVelo
-
-                if(ball.y + ball.width/2 > finLine.y){
-                    ball.visibility = View.GONE
-                    button1.visibility = View.VISIBLE
-                }
 
             }
 
-
-
-
-
-        }
     }
 
 

@@ -40,16 +40,16 @@
         android:layout_marginTop="300dp"/>
 
     <ImageView
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/finish_line_h"
+        android:src="@drawable/fnsh_line_h"
         />
 
     <ImageView
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/finish_line_h" />
+        android:src="@drawable/fnsh_line_h" />
 
 
 </RelativeLayout>
