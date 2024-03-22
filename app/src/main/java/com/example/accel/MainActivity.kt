@@ -2,39 +2,28 @@ package com.example.accel
 
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.media.Image
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.VelocityTracker
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import java.math.RoundingMode
 import kotlin.math.absoluteValue
-import kotlin.math.acos
 import kotlin.math.asin
 import kotlin.math.atan
-import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
 import kotlin.math.tan
 
 
@@ -47,7 +36,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var mv: RelativeLayout
     private lateinit var finLine: View
     private lateinit var button1: Button
-    private lateinit var start_button: Button
+
     private lateinit var deets: TextView
 
     private lateinit var timer: CountDownTimer
@@ -84,31 +73,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-
         button1.setOnClickListener{
-            ball.y = meas.y + ball.width
-            ball.x = (finLine.width/2).toFloat()
-            xVelo = 0F
-            yVelo = 0F
-            ball.visibility = VISIBLE
+            ballReset()
             timeLeft = 5.00
             timer.start()
             button1.visibility = View.GONE
         }
         button1.visibility = View.GONE
 
-        obs1 = createObs(this,mv,200F, 500F, 700, 700, 0.8, "square")
 
 
-//        setContentView(R.layout.start_screen)
-//        start_button = findViewById(R.id.strt_but)
-//
-//        start_button.setOnClickListener {
-//            setContentView(R.layout.activity_main)
-//
-//        }
 
-        setUpSensorStuff()
+        obs1 = createObs(this,mv,200F, 500F, 300, 300, 0.8, "circle")
 
 
         // Obstacles
@@ -121,7 +97,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             override fun onTick(millisUntilFinished: Long) {
                 details_1.text = timeLeft.toBigDecimal().setScale(1, RoundingMode.UP).toDouble().toString()
                 timeLeft -= 0.1
-                if (timeLeft < -10000.0){
+                if (timeLeft < -1){
                     timer.cancel()
                     details_1.visibility = View.GONE
                     ball.visibility = View.GONE
@@ -140,6 +116,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 timer.start()
             }
         }
+        setUpSensorStuff()
+
+
+    }
+
+    fun ballReset(){
+        ball.y = meas.y + ball.width
+        ball.x = (finLine.width/2).toFloat()
+        xVelo = 0F
+        yVelo = 0F
+        ball.visibility = VISIBLE
     }
 
     override fun onStart() {
@@ -182,54 +169,55 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 }
             }
         }
-//        else {
-//            val deltaX = ballCenterX - xCi
-//            val deltaY = ballCenterY - yCi
-//            var offset = 0
-//            val ballR = ball.width/2
-//            val obsR = obsIV.width/2
-//
-//            if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
-//                if (ballCenterY > yCi && ballCenterX > xCi) { // bottom right
-//                    offset = 180
-//                }
-//                else if (ballCenterY > yCi){ //bottom left
-//                    offset = 270
-//                }
-//                else if (ballCenterX > xCi){ // top right
-//                    offset = 90
-//                }
-//
-//                val hyp = ballR+obsR
-//                val thetaPos = asin((yCi-ballCenterY)/(hyp))
-//
-//                var oppXvelo = -xVelo
-//                var oppYvelo = -yVelo
-//
-//                val thetaVel = atan(yVelo.absoluteValue/xVelo.absoluteValue)
-//
-//                val thetaTrue = (thetaPos+thetaVel)/2
-//
-//                val TotalVelo = (xVelo.absoluteValue + yVelo.absoluteValue)*0.9
-//
-//
-//
-//                if (ballCenterX < xCi) {
-//                    xVelo = (((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
-//                }
-//                else if (ballCenterX > xCi) {
-//                    xVelo = (-((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
-//                }
-//                if (ballCenterY < yCi) {
-//                    yVelo = (-(TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
-//                }
-//                else if (ballCenterY > yCi) {
-//                    yVelo = -((TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
-//                }
-//
-//
-//            }
-//        }
+        else {
+            val deltaX = ballCenterX - xCi
+            val deltaY = ballCenterY - yCi
+            var offset = 0
+            val ballR = ball.width/2
+            val obsR = obsIV.width/2
+
+            if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
+                if (ballCenterY > yCi && ballCenterX > xCi) { // bottom right
+                    offset = 180
+                }
+                else if (ballCenterY > yCi){ //bottom left
+                    offset = 270
+                }
+                else if (ballCenterX > xCi){ // top right
+                    offset = 90
+                }
+
+                val hyp = ballR+obsR
+                val thetaPos = asin((yCi-ballCenterY)/(hyp))
+
+                var oppXvelo = -xVelo
+                var oppYvelo = -yVelo
+
+                val thetaVel = atan(yVelo.absoluteValue/xVelo.absoluteValue)
+
+                val thetaTrue = (thetaPos+thetaVel)/2
+                deets.text = thetaTrue.toString()
+
+                val TotalVelo = (xVelo.absoluteValue + yVelo.absoluteValue)*0.9
+
+
+
+                if (ballCenterX < xCi) {
+                    xVelo = (((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+                }
+                else if (ballCenterX > xCi) {
+                    xVelo = (-((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+                }
+                if (ballCenterY < yCi) {
+                    yVelo = (-(TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+                }
+                else if (ballCenterY > yCi) {
+                    yVelo = ((TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+                }
+
+
+            }
+        }
 
     }
 
@@ -266,6 +254,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         return Pair(newCoord, newVelocity)
     }
 
+    fun Fdrag(velo: Float, Vmax: Float = 20F): Float {
+        val Cd = (1.96)/(90.945*(terminal_velo.toDouble().pow(2)))
+        val dir: Double
+        if (velo > 0) {
+            dir = 1.0
+        }
+        else {
+            dir = -1.0
+        }
+        return (dir*((0.5) * (1.29) * (velo.pow(2)) * Cd * (ball.width))).toFloat()
+    }
+
 
 
 
@@ -277,15 +277,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val sides = event.values[0]
                 val upDown = event.values[1]
 
-                val rightBounds = (meas.right - ball.width).toFloat()
-                val bottomBounds = (meas.bottom - ball.height).toFloat()
-
-
                 xAccel = sides / 5
                 yAccel = upDown / 5
 
-                xVelo += xAccel*(1-(xVelo/terminal_velo))
-                yVelo += yAccel*(1-(yVelo/terminal_velo))
+                val rightBounds = (meas.right - ball.width).toFloat()
+                val bottomBounds = (meas.bottom - ball.height).toFloat()
+
+                var FdragX = Fdrag(xVelo)
+                var FdragY = Fdrag(yVelo)
+
+
+
+                xVelo += xAccel - FdragX
+                yVelo += yAccel - FdragY
+
 
                 colDetec(obs1)
 
@@ -293,9 +298,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
                 val hyp = (ball.width/2)+(obsIV.width/2)
                 val thetaPos = asin((((obsIV.width/2)+obsIV.y)-((ball.width/2)+ball.y))/(hyp))
-                deets.text = (thetaPos*180/3.14).toString()
-
-
 
 
 

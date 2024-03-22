@@ -10,8 +10,8 @@ import android.widget.RelativeLayout
 
 
 
-public fun createObs(th:Context ,rl: RelativeLayout, x: Float, y: Float, ht: Int, wd: Int, dampning:Double = 0.8, shape: String = "square"): Array<Any> {
-    var obs = ImageView(th)
+fun createObs(th:Context ,rl: RelativeLayout, x: Float, y: Float, ht: Int, wd: Int, dampning:Double = 0.8, shape: String = "square"): Array<Any> {
+    val obs = ImageView(th)
     if (shape == "circle") {
         obs.setImageResource(R.drawable.circ_obs)
     } else {
