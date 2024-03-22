@@ -9,7 +9,43 @@ class ObseleteStuff
 {
 
 
-
+//    if (ballCenterY > yCi && ballCenterX > xCi) { // bottom right
+//                    offset = 180
+//                }
+//                else if (ballCenterY > yCi){ //bottom left
+//                    offset = 270
+//                }
+//                else if (ballCenterX > xCi){ // top right
+//                    offset = 90
+//                }
+//
+//                val hyp = ballR+obsR
+//                val thetaPos = asin((yCi-ballCenterY)/(hyp))
+//
+//                var oppXvelo = -xVelo
+//                var oppYvelo = -yVelo
+//
+//                val thetaVel = atan(yVelo.absoluteValue/xVelo.absoluteValue)
+//
+//                val thetaTrue = (thetaPos+thetaVel)/2
+//                deets.text = thetaTrue.toString()
+//
+//                val TotalVelo = (xVelo.absoluteValue + yVelo.absoluteValue)*0.9
+//
+//
+//
+//                if (ballCenterX < xCi) {
+//                    xVelo = (((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+//                }
+//                else if (ballCenterX > xCi) {
+//                    xVelo = (-((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
+//                }
+//                if (ballCenterY < yCi) {
+//                    yVelo = (-(TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+//                }
+//                else if (ballCenterY > yCi) {
+//                    yVelo = ((TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
+//                }
 
 
 

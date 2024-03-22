@@ -21,9 +21,13 @@ import java.math.RoundingMode
 import kotlin.math.absoluteValue
 import kotlin.math.asin
 import kotlin.math.atan
+import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 import kotlin.math.tan
 
 
@@ -177,44 +181,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val obsR = obsIV.width/2
 
             if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
-                if (ballCenterY > yCi && ballCenterX > xCi) { // bottom right
-                    offset = 180
-                }
-                else if (ballCenterY > yCi){ //bottom left
-                    offset = 270
-                }
-                else if (ballCenterX > xCi){ // top right
-                    offset = 90
-                }
+                val dx = xVelo.toDouble()
+                val dy = yVelo.toDouble()
+                val speed: Double = sqrt(dx.pow(2) + dy.pow(2))
+                val currentAngle: Double = atan2(dy, dx)
 
-                val hyp = ballR+obsR
-                val thetaPos = asin((yCi-ballCenterY)/(hyp))
+                val reflecAngle: Double = atan2(xCi.toDouble() - ballCenterX, yCi.toDouble() - ballCenterY)
+                val newAng: Double = 2*reflecAngle - currentAngle
 
-                var oppXvelo = -xVelo
-                var oppYvelo = -yVelo
-
-                val thetaVel = atan(yVelo.absoluteValue/xVelo.absoluteValue)
-
-                val thetaTrue = (thetaPos+thetaVel)/2
-                deets.text = thetaTrue.toString()
-
-                val TotalVelo = (xVelo.absoluteValue + yVelo.absoluteValue)*0.9
-
-
-
-                if (ballCenterX < xCi) {
-                    xVelo = (((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
-                }
-                else if (ballCenterX > xCi) {
-                    xVelo = (-((TotalVelo)/(tan(thetaTrue)+1))).toFloat()
-                }
-                if (ballCenterY < yCi) {
-                    yVelo = (-(TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
-                }
-                else if (ballCenterY > yCi) {
-                    yVelo = ((TotalVelo - xVelo.absoluteValue)*0.7).toFloat()
-                }
-
+                xVelo = (speed * cos(newAng)).toFloat()
+                yVelo = (speed * sin(newAng)).toFloat()
 
             }
         }
