@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.WindowManager
@@ -40,12 +41,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var mv: RelativeLayout
     private lateinit var finLine: View
     private lateinit var button1: Button
+    private lateinit var strtbut: Button
 
     private lateinit var deets: TextView
 
     private lateinit var timer: CountDownTimer
 
-    lateinit var obs1: Array<Any>
+
+    private lateinit var obstacles: Array<Array<Any>>
+
+
 
     var timeLeft: Double = 5.00
 
@@ -59,13 +64,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window.addFlags(
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
 
         details_1 = findViewById(R.id.deets_1)
         ball = findViewById(R.id.pro_ball)
@@ -74,6 +80,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         finLine = findViewById(R.id.finish_line)
         button1 = findViewById(R.id.fail_win)
         deets = findViewById(R.id.debug)
+
 
 
 
@@ -86,13 +93,28 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         button1.visibility = View.GONE
 
 
+        obstacles = arrayOf(
+            createObs(this,mv,200F, 500F, 250, 250, 0.8, "circle"),
+            createObs(this,mv,700F, 500F, 250, 250, 0.8, "circle")
+        )
 
+        (obstacles[0][0] as ImageView).setOnTouchListener { _, event ->
+            // Get the X and Y coordinates of the touch event
+            val x = event.x
+            val y = event.y
 
-        obs1 = createObs(this,mv,200F, 500F, 300, 300, 0.8, "circle")
-
-
-        // Obstacles
-
+            // Perform actions based on the touch event
+            when (event.action) {
+                MotionEvent.ACTION_MOVE -> {
+                    // Finger is moving across the screen
+                    // Perform any desired actions here
+                    deets.text = "x = $x \n y = $y"
+                    (obstacles[0][0] as ImageView).x = x
+                    (obstacles[0][0] as ImageView).y = y
+                }
+            }
+            true
+        }
 
         button1.bringToFront()
 
@@ -101,7 +123,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             override fun onTick(millisUntilFinished: Long) {
                 details_1.text = timeLeft.toBigDecimal().setScale(1, RoundingMode.UP).toDouble().toString()
                 timeLeft -= 0.1
-                if (timeLeft < -1){
+                if (timeLeft < -0.1){
                     timer.cancel()
                     details_1.visibility = View.GONE
                     ball.visibility = View.GONE
@@ -121,8 +143,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
         setUpSensorStuff()
-
-
     }
 
     fun ballReset(){
@@ -268,12 +288,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 yVelo += yAccel - FdragY
 
 
-                colDetec(obs1)
-
-                val obsIV: ImageView = obs1[0] as ImageView
-
-                val hyp = (ball.width/2)+(obsIV.width/2)
-                val thetaPos = asin((((obsIV.width/2)+obsIV.y)-((ball.width/2)+ball.y))/(hyp))
+//                colDetec(obs1)
+                for (obs in obstacles){
+                    colDetec(obs)
+                }
 
 
 
