@@ -15,7 +15,10 @@
         android:theme="@style/Theme.Accel"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".StartScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

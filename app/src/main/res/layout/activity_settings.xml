@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Settings"
+    android:background="@color/black">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_horizontal"
+        android:text="Settings"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:text="Gravity: "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/new_grav"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter new grav"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="numberDecimal"/>
+        <TextView
+            android:id="@+id/current_grav"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Current"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Update"
+        android:textSize="20dp"
+        android:layout_marginTop="550dp"/>
+
+
+
+</LinearLayout>

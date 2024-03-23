@@ -2,6 +2,7 @@ package com.example.accel
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -31,6 +32,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
+var grav_strength: Double = 1.96
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -79,7 +81,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         mv = findViewById(R.id.main_view)
         finLine = findViewById(R.id.finish_line)
         button1 = findViewById(R.id.fail_win)
-        deets = findViewById(R.id.debug)
+        var set_but = findViewById<Button>(R.id.setting_but)
+//        deets = findViewById(R.id.debug)
+
+        set_but.setOnClickListener {
+            val intent: Intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+        }
 
 
 
@@ -98,24 +106,26 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             createObs(this,mv,700F, 500F, 250, 250, 0.8, "circle")
         )
 
-        (obstacles[0][0] as ImageView).setOnTouchListener { _, event ->
-            // Get the X and Y coordinates of the touch event
-            val x = event.x
-            val y = event.y
+        for (obs in obstacles) {
+            (obs[0] as ImageView).setOnTouchListener { _, event ->
+                // Get the X and Y coordinates of the touch event
+                val x = event.rawX - ((obs[0] as ImageView).width / 2)
+                val y = event.rawY - ((obs[0] as ImageView).width)
 
-            // Perform actions based on the touch event
-            when (event.action) {
-                MotionEvent.ACTION_MOVE -> {
-                    // Finger is moving across the screen
-                    // Perform any desired actions here
-                    deets.text = "x = $x \n y = $y"
-                    (obstacles[0][0] as ImageView).x = x
-                    (obstacles[0][0] as ImageView).y = y
+                // Perform actions based on the touch event
+                when (event.action) {
+
+                    MotionEvent.ACTION_MOVE -> {
+                        // Finger is moving across the screen
+                        // Perform any desired actions here
+                        deets.text = "x = $x \n y = $y"
+                        (obs[0] as ImageView).x = x
+                        (obs[0] as ImageView).y = y
+                    }
                 }
+                true
             }
-            true
         }
-
         button1.bringToFront()
 
 
@@ -273,14 +283,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val sides = event.values[0]
                 val upDown = event.values[1]
 
-                xAccel = sides / 5
-                yAccel = upDown / 5
+                var grav_real = 9.81/ grav_strength
+
+                xAccel = (sides / grav_real).toFloat()
+                yAccel = (upDown / grav_real).toFloat()
 
                 val rightBounds = (meas.right - ball.width).toFloat()
                 val bottomBounds = (meas.bottom - ball.height).toFloat()
 
                 var FdragX = Fdrag(xVelo)
                 var FdragY = Fdrag(yVelo)
+
 
 
 

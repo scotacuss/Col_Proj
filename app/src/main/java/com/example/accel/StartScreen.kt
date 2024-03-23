@@ -1,11 +1,13 @@
 package com.example.accel
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-class MainActivity2 : AppCompatActivity() {
+class StartScreen : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.start_screen)
@@ -17,6 +19,12 @@ class MainActivity2 : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val set_but = findViewById<Button>(R.id.setting_but)
+
+        set_but.setOnClickListener {
+            val intent: Intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+        }
 
 
     }

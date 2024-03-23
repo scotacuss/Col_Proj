@@ -23,17 +23,24 @@
         android:layout_marginTop="700dp"
         android:src="@drawable/finish_line" />
 
+
     <TextView
         android:id="@+id/deets_1"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="280dp"
         android:gravity="center"
         android:hint="5.00"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="30dp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setting_but"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="340dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/cog" />
 
     <Button
         android:id="@+id/fail_win"
@@ -48,16 +55,16 @@
         android:textColorHint="@color/white"
         android:textSize="35dp" />
 
-    <TextView
-        android:id="@+id/debug"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:gravity="center_horizontal"
-        android:hint="5.00"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="15dp"
-        android:alpha="1"/>
+<!--    <TextView-->
+<!--        android:id="@+id/debug"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:hint="5.00"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textColorHint="@color/white"-->
+<!--        android:textSize="15dp"-->
+<!--        android:alpha="0"/>-->
 
     <ImageView
         android:id="@+id/pro_ball"

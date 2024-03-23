@@ -39,6 +39,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="300dp"/>
 
+    <Button
+        android:id="@+id/setting_but"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:hint="Settings"
+        android:textColorHint="@color/white"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="420dp"/>
+
     <ImageView
         android:layout_width="70dp"
         android:layout_height="wrap_content"
