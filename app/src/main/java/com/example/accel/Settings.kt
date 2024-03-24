@@ -3,10 +3,15 @@ package com.example.accel
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 
+var current_grav = "earth"
 
 class Settings : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -17,9 +22,47 @@ class Settings : AppCompatActivity() {
         val cur_grav = findViewById<TextView>(R.id.current_grav)
         val new_grav = findViewById<EditText>(R.id.new_grav)
 
-        val sync = findViewById<Button>(R.id.sync)
+        val cur_den = findViewById<TextView>(R.id.current_density)
+        val new_den = findViewById<EditText>(R.id.new_density)
 
-        cur_grav.text = " $grav_strength m/s^2 "
+        val dpdw = findViewById<Spinner>(R.id.spinner1)
+
+        // Define the array of options
+        val options = arrayOf("earth", "moon", "mars")
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        dpdw.adapter = adapter
+        cur_den.text = current_grav
+
+
+
+        dpdw.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // Item selected, perform your actions here
+                val selectedItem = dpdw.getItemAtPosition(position).toString()
+                // Do something with the selected item
+                current_grav = selectedItem
+                cur_den.text = current_grav
+//
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                return
+            }
+
+        }
+
+
+
+
+//        cur_den.text = current_grav
+        cur_grav.text = " $grav_strength m/s^2"
 
 
 

@@ -2,6 +2,7 @@ package com.example.accel
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -32,7 +33,9 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
+
 var grav_strength: Double = 1.96
+var medium_density: Double = 1.293
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var timer: CountDownTimer
 
 
-    private lateinit var obstacles: Array<Array<Any>>
+    private lateinit var obstacles: MutableList<Array<Any>>
 
 
 
@@ -82,7 +85,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         finLine = findViewById(R.id.finish_line)
         button1 = findViewById(R.id.fail_win)
         var set_but = findViewById<Button>(R.id.setting_but)
-//        deets = findViewById(R.id.debug)
+        deets = findViewById(R.id.debug)
 
         set_but.setOnClickListener {
             val intent: Intent = Intent(this, Settings::class.java)
@@ -101,7 +104,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         button1.visibility = View.GONE
 
 
-        obstacles = arrayOf(
+        obstacles = mutableListOf(
             createObs(this,mv,200F, 500F, 250, 250, 0.8, "circle"),
             createObs(this,mv,700F, 500F, 250, 250, 0.8, "circle")
         )
@@ -172,6 +175,35 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onStop()
         timer.cancel()
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun addObs(){
+        var shapee = "square"
+        if(shape == "C"){
+            shapee = "circle"
+        }
+        obstacles.add(createObs(this,mv,0F,0F, len,wid,damp,shapee))
+        (obstacles.last()[0] as ImageView).setOnTouchListener { _, event ->
+            // Get the X and Y coordinates of the touch event
+            val x = event.rawX - ((obstacles.last()[0] as ImageView).width / 2)
+            val y = event.rawY - ((obstacles.last()[0] as ImageView).width)
+
+            // Perform actions based on the touch event
+            when (event.action) {
+
+                MotionEvent.ACTION_MOVE -> {
+                    // Finger is moving across the screen
+                    // Perform any desired actions here
+                    deets.text = "x = $x \n y = $y"
+                    (obstacles.last()[0] as ImageView).x = x
+                    (obstacles.last()[0] as ImageView).y = y
+                }
+            }
+            true
+        }
+    }
+
+
 
     fun colDetec(obs: Array<Any>) {
         // ChatGPT
@@ -293,6 +325,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
                 var FdragX = Fdrag(xVelo)
                 var FdragY = Fdrag(yVelo)
+
+                if (obstacle_created == 1){
+                    addObs()
+                    obstacle_created = 0
+                }
 
 
 

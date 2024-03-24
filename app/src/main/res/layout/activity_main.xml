@@ -55,16 +55,16 @@
         android:textColorHint="@color/white"
         android:textSize="35dp" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/debug"-->
-<!--        android:layout_width="150dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:gravity="center_horizontal"-->
-<!--        android:hint="5.00"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textColorHint="@color/white"-->
-<!--        android:textSize="15dp"-->
-<!--        android:alpha="0"/>-->
+    <TextView
+        android:id="@+id/debug"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:gravity="center_horizontal"
+        android:hint="5.00"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="15dp"
+        android:alpha="0"/>
 
     <ImageView
         android:id="@+id/pro_ball"

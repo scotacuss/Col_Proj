@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Accel"
         tools:targetApi="31">
         <activity
+            android:name=".ObstacleCreator"
+            android:exported="false" />
+        <activity
             android:name=".Settings"
             android:exported="false" />
         <activity

@@ -13,16 +13,20 @@ class StartScreen : AppCompatActivity() {
         setContentView(R.layout.start_screen)
 
         val strtBut = findViewById<Button>(R.id.strt_but)
-
         strtBut.setOnClickListener {
             val intent: Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
         val set_but = findViewById<Button>(R.id.setting_but)
-
         set_but.setOnClickListener {
             val intent: Intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+        }
+
+        val obs_but = findViewById<Button>(R.id.obs_creator)
+        obs_but.setOnClickListener {
+            val intent: Intent = Intent(this, ObstacleCreator::class.java)
             startActivity(intent)
         }
 
