@@ -37,6 +37,10 @@ import kotlin.math.tan
 var grav_strength: Double = 1.96
 var medium_density: Double = 1.293
 
+var arbitrary = 1
+
+
+
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
@@ -95,6 +99,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
+
+
         button1.setOnClickListener{
             ballReset()
             timeLeft = 5.00
@@ -109,6 +115,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             createObs(this,mv,700F, 500F, 250, 250, 0.8, "circle")
         )
 
+        if (arbitrary > 0) {
+            created_obs.removeAt(0)
+            arbitrary --
+        }
+
+        if (created_obs.size > 0) {
+            for (obs in created_obs) {
+                obstacles.add(createObs(this,mv,0F,0F,obs[0] as Int,obs[1] as Int,obs[2] as Double,obs[3] as String))
+            }
+        }
+
+
+
         for (obs in obstacles) {
             (obs[0] as ImageView).setOnTouchListener { _, event ->
                 // Get the X and Y coordinates of the touch event
@@ -121,7 +140,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                     MotionEvent.ACTION_MOVE -> {
                         // Finger is moving across the screen
                         // Perform any desired actions here
-                        deets.text = "x = $x \n y = $y"
                         (obs[0] as ImageView).x = x
                         (obs[0] as ImageView).y = y
                     }
@@ -176,32 +194,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         timer.cancel()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    fun addObs(){
-        var shapee = "square"
-        if(shape == "C"){
-            shapee = "circle"
-        }
-        obstacles.add(createObs(this,mv,0F,0F, len,wid,damp,shapee))
-        (obstacles.last()[0] as ImageView).setOnTouchListener { _, event ->
-            // Get the X and Y coordinates of the touch event
-            val x = event.rawX - ((obstacles.last()[0] as ImageView).width / 2)
-            val y = event.rawY - ((obstacles.last()[0] as ImageView).width)
 
-            // Perform actions based on the touch event
-            when (event.action) {
-
-                MotionEvent.ACTION_MOVE -> {
-                    // Finger is moving across the screen
-                    // Perform any desired actions here
-                    deets.text = "x = $x \n y = $y"
-                    (obstacles.last()[0] as ImageView).x = x
-                    (obstacles.last()[0] as ImageView).y = y
-                }
-            }
-            true
-        }
-    }
 
 
 
@@ -315,6 +308,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val sides = event.values[0]
                 val upDown = event.values[1]
 
+                deets.text = obstacles.size.toString()
+
                 var grav_real = 9.81/ grav_strength
 
                 xAccel = (sides / grav_real).toFloat()
@@ -327,7 +322,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 var FdragY = Fdrag(yVelo)
 
                 if (obstacle_created == 1){
-                    addObs()
                     obstacle_created = 0
                 }
 

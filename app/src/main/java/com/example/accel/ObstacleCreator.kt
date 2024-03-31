@@ -10,11 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-var shape = "C"
+var shape = "circle"
 var len = 200
 var wid = 200
 var damp = 1.0
 var obstacle_created = 0
+
+var created_obs: MutableList<Array<Any>> = mutableListOf(arrayOf(250, 250, 0.8, "circle"))
 class ObstacleCreator : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +33,13 @@ class ObstacleCreator : AppCompatActivity() {
         var obs_creater = findViewById<Button>(R.id.creator)
 
         obs_creater.setOnClickListener {
-            obstacle_created = 1
+            created_obs.add(arrayOf(len,wid,damp,shape))
         }
 
-
+        obs_shape.hint = shape
+        obs_len.hint = len.toString()
+        obs_width.hint = wid.toString()
+        obs_damp.hint = damp.toString()
 
 
 

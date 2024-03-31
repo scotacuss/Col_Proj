@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shape (C/S): "
+            android:text="Shape (circle/square): "
             android:gravity="center"
             android:layout_marginLeft="15dp"
             android:textColor="@color/white"
