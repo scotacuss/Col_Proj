@@ -11,7 +11,15 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 
-var current_grav = "earth"
+var current_preset = "moon"
+
+
+var medium_density: Double = 1.293
+var medium_gravity: Double = 9.81
+
+var ball_mass: Double = 1.0
+var COR: Double = 1.0
+var Diameter: Int = 100
 
 class Settings : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -19,68 +27,62 @@ class Settings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val cur_grav = findViewById<TextView>(R.id.current_grav)
         val new_grav = findViewById<EditText>(R.id.new_grav)
-
-        val cur_den = findViewById<TextView>(R.id.current_density)
         val new_den = findViewById<EditText>(R.id.new_density)
-
-        val dpdw = findViewById<Spinner>(R.id.spinner1)
-
-        // Define the array of options
-        val options = arrayOf("earth", "moon", "mars")
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        dpdw.adapter = adapter
-        cur_den.text = current_grav
+        val cur_pre = findViewById<TextView>(R.id.cur_preset)
+        val earth_but = findViewById<Button>(R.id.earth)
+        val moon_but = findViewById<Button>(R.id.moon)
+        val mars_but = findViewById<Button>(R.id.mars)
 
 
+        cur_pre.text = current_preset
+        new_den.hint = medium_density.toString()
+        new_grav.hint = medium_gravity.toString()
 
-        dpdw.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // Item selected, perform your actions here
-                val selectedItem = dpdw.getItemAtPosition(position).toString()
-                // Do something with the selected item
-                current_grav = selectedItem
-                cur_den.text = current_grav
-//
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                return
-            }
-
+        earth_but.setOnClickListener {
+            current_preset = "earth"
+            cur_pre.text = current_preset
+        }
+        moon_but.setOnClickListener {
+            current_preset = "moon"
+            cur_pre.text = current_preset
+        }
+        mars_but.setOnClickListener {
+            current_preset = "mars"
+            cur_pre.text = current_preset
         }
 
 
 
 
-//        cur_den.text = current_grav
-        cur_grav.text = " $grav_strength m/s^2"
+
+
+
+
 
 
 
         new_grav.setOnEditorActionListener { _, _, _ ->
-            // Get the text from the EditText
             val inputText = new_grav.text.toString()
-
-            // Try to parse the text to Float
             val inputValue = inputText.toDoubleOrNull()
-
-            // If parsing successful, update grav_strength
             if (inputValue != null) {
-                grav_strength = inputValue
-                cur_grav.text = " $grav_strength m/s^2 "
+                medium_gravity = inputValue
             }
-            // Consume the event
             true
         }
+
+
+
+
+        new_den.setOnEditorActionListener { _, _, _ ->
+            val inputText = new_den.text.toString()
+            val inputValue = inputText.toDoubleOrNull()
+            if (inputValue != null) {
+                medium_density = inputValue
+            }
+            true
+        }
+
 
 
     }

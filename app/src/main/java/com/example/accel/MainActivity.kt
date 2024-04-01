@@ -35,7 +35,7 @@ import kotlin.math.tan
 
 
 var grav_strength: Double = 1.96
-var medium_density: Double = 1.293
+
 
 var arbitrary = 1
 
@@ -95,6 +95,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val intent: Intent = Intent(this, Settings::class.java)
             startActivity(intent)
         }
+
+
 
 
 

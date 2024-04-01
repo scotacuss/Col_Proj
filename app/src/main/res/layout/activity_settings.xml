@@ -16,27 +16,84 @@
         android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="#305EAC"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Current Enviroment Preset: "
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/cur_preset"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/earth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Earth"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/moon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Moon"
+            android:layout_marginRight="5dp"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/mars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Mars"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"/>
+
+    </LinearLayout>
 
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="82dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gravity: "
+            android:text="Gravity (m/s\u00B2): "
             android:gravity="center"
             android:layout_marginLeft="15dp"
             android:textColor="@color/white"
@@ -52,29 +109,21 @@
             android:background="#305EAC"
             android:textSize="20sp"
             android:inputType="numberDecimal"/>
-        <TextView
-            android:id="@+id/current_grav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="Current"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/white"
-            android:background="#305EAC"
-            android:textSize="20sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium Density: "
+            android:text="Medium Density (kg/m\u00B3): "
             android:gravity="center"
             android:layout_marginLeft="15dp"
             android:textColor="@color/white"
@@ -91,19 +140,161 @@
             android:background="#305EAC"
             android:textSize="20sp"
             android:inputType="numberDecimal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+
         <TextView
-            android:id="@+id/current_density"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text=" Current projectile Preset: "
             android:gravity="center"
-            android:hint="Current"
-            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
             android:textColor="@color/white"
             android:background="#305EAC"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/cur_ball"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#305EAC"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/limestone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Limestone"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/rubber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Rubber"
+            android:layout_marginRight="5dp"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/gold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Gold"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Projectile Density (kg/m\u00B3): "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/new_mass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter new"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="numberDecimal"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Coefficient of restitution: "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/new_damp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter new"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="numberDecimal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Projectile Diameter (m): "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/new_diam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter new"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="numberDecimal"/>
+
+    </LinearLayout>
 
 
 
