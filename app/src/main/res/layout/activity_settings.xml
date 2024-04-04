@@ -7,14 +7,29 @@
     tools:context=".Settings"
     android:background="@color/black">
 
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/main_but"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="340dp"
+
+        android:background="@drawable/cog" />
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:text="Settings"
         android:textColor="@color/white"
         android:textSize="30sp" />
+
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,10 +50,17 @@
 
         <TextView
             android:id="@+id/cur_preset"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="@color/white"
             android:background="#305EAC"
             android:textSize="20sp" />
@@ -109,6 +131,13 @@
             android:background="#305EAC"
             android:textSize="20sp"
             android:inputType="numberDecimal"/>
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -140,6 +169,13 @@
             android:background="#305EAC"
             android:textSize="20sp"
             android:inputType="numberDecimal"/>
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -162,12 +198,19 @@
 
         <TextView
             android:id="@+id/cur_ball"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#305EAC"
             android:gravity="center"
             android:textColor="@color/white"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -224,16 +267,23 @@
             android:textColor="@color/white"
             android:background="#305EAC"
             android:textSize="20sp" />
+
         <EditText
-            android:id="@+id/new_mass"
+            android:id="@+id/new_proden"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter new"
+            android:background="#305EAC"
+            android:inputType="numberDecimal"
+            android:textColor="@color/white"
             android:textColorHint="#A6A3A3"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="@color/white"
             android:background="#305EAC"
-            android:textSize="20sp"
-            android:inputType="numberDecimal"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -257,12 +307,19 @@
             android:id="@+id/new_damp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter new"
+
             android:textColorHint="#A6A3A3"
             android:textColor="@color/white"
             android:background="#305EAC"
             android:textSize="20sp"
             android:inputType="numberDecimal"/>
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -277,22 +334,30 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Projectile Diameter (m): "
+            android:text=" Projectile Diameter (cm): "
             android:gravity="center"
             android:layout_marginLeft="15dp"
             android:textColor="@color/white"
             android:background="#305EAC"
             android:textSize="20sp" />
+
         <EditText
             android:id="@+id/new_diam"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter new"
+            android:background="#305EAC"
+
+            android:inputType="numberDecimal"
+            android:textColor="@color/white"
             android:textColorHint="#A6A3A3"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="@color/white"
             android:background="#305EAC"
-            android:textSize="20sp"
-            android:inputType="numberDecimal"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
 

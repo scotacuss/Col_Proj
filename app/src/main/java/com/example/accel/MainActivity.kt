@@ -34,7 +34,7 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 
-var grav_strength: Double = 1.96
+
 
 
 var arbitrary = 1
@@ -51,26 +51,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var finLine: View
     private lateinit var button1: Button
     private lateinit var strtbut: Button
-
     private lateinit var deets: TextView
 
     private lateinit var timer: CountDownTimer
 
-
     private lateinit var obstacles: MutableList<Array<Any>>
 
-
-
     var timeLeft: Double = 5.00
-
     private var xAccel = 0F
     private var yAccel = 0F
     var xVelo = 0F
     var yVelo = 0F
     val terminal_velo = 40
     val dampner = 0.8F // coefficient of restitution
-
-
 
 
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
@@ -96,6 +89,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             startActivity(intent)
         }
 
+        ball.layoutParams.height = diameter
+        ball.layoutParams.width = diameter
+
 
 
 
@@ -113,8 +109,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
         obstacles = mutableListOf(
-            createObs(this,mv,200F, 500F, 250, 250, 0.8, "circle"),
-            createObs(this,mv,700F, 500F, 250, 250, 0.8, "circle")
+            createObs(this,mv,200F, 500F, 250, 250, 1.0, "circle"),
+            createObs(this,mv,700F, 500F, 250, 250, 1.0, "circle")
         )
 
         if (arbitrary > 0) {
@@ -197,9 +193,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
-
-
-
     fun colDetec(obs: Array<Any>) {
         // ChatGPT
         val obsIV: ImageView = obs[0] as ImageView
@@ -223,10 +216,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             if (deltaX.pow(2) + deltaY.pow(2) < (ball.width / 2).toDouble().pow(2)) {
                 // Collision detected
                 if (deltaX.toDouble() != 0.0) {
-                    xVelo = (-xVelo * obsDamp).toFloat()
+                    xVelo = (-xVelo * obsDamp * COR).toFloat()
                 }
                 if (deltaY.toDouble() != 0.0) {
-                    yVelo = (-yVelo * obsDamp).toFloat()
+                    yVelo = (-yVelo * obsDamp * COR).toFloat()
                 }
             }
         }
@@ -246,21 +239,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val reflecAngle: Double = atan2(xCi.toDouble() - ballCenterX, yCi.toDouble() - ballCenterY)
                 val newAng: Double = 2*reflecAngle - currentAngle
 
-                xVelo = (speed * cos(newAng)).toFloat()
-                yVelo = (speed * sin(newAng)).toFloat()
+                xVelo = ((speed * cos(newAng))* obsDamp * COR).toFloat()
+                yVelo = ((speed * sin(newAng))* obsDamp * COR).toFloat()
 
             }
         }
 
     }
-
-
-
-
-
-
-
-
 
     private fun setUpSensorStuff() {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -275,19 +260,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-
-
     fun screenBoundaryCollision(coord: Float, minBound: Float, maxBound: Float, velocity: Float): Pair<Float, Float> {
         val newCoord = when {
             coord > maxBound -> maxBound
             coord < minBound -> minBound
             else -> coord
         }
-        val newVelocity = if (newCoord != coord) -velocity * dampner else velocity
+        val newVelocity = if (newCoord != coord) -velocity * COR.toFloat() else velocity
         return Pair(newCoord, newVelocity)
     }
 
-    fun Fdrag(velo: Float, Vmax: Float = 20F): Float {
+    fun Fdrag(velo: Float, Vmax: Float = 20F): Double {
         val Cd = (1.96)/(90.945*(terminal_velo.toDouble().pow(2)))
         val dir: Double
         if (velo > 0) {
@@ -296,12 +279,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         else {
             dir = -1.0
         }
-        return (dir*((0.5) * (1.29) * (velo.pow(2)) * Cd * (ball.width))).toFloat()
+        return (dir*((0.5) * (medium_density) * (velo.pow(2)) * 0.00001 * ((3.14* (diameter/2)/100).pow(2))).toFloat())
     }
-
-
-
-
 
     @SuppressLint("SetTextI18n", "ResourceType")
     override fun onSensorChanged(event: SensorEvent?) {
@@ -312,10 +291,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
                 deets.text = obstacles.size.toString()
 
-                var grav_real = 9.81/ grav_strength
+                var grav_real = medium_gravity/9.81
 
-                xAccel = (sides / grav_real).toFloat()
-                yAccel = (upDown / grav_real).toFloat()
+                xAccel = (sides * grav_real).toFloat()
+                yAccel = (upDown * grav_real).toFloat()
 
                 val rightBounds = (meas.right - ball.width).toFloat()
                 val bottomBounds = (meas.bottom - ball.height).toFloat()
@@ -323,15 +302,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 var FdragX = Fdrag(xVelo)
                 var FdragY = Fdrag(yVelo)
 
-                if (obstacle_created == 1){
-                    obstacle_created = 0
-                }
+                deets.text = FdragY.toString()
 
-
-
-
-                xVelo += xAccel - FdragX
-                yVelo += yAccel - FdragY
+                xVelo += xAccel - FdragX.toFloat()
+                yVelo += yAccel - FdragY.toFloat()
 
 
 //                colDetec(obs1)
@@ -367,7 +341,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
 
     }
-
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         return
