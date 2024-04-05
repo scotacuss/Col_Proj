@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         ball = findViewById(R.id.pro_ball)
         meas = findViewById(R.id.measur)
         mv = findViewById(R.id.main_view)
-        finLine = findViewById(R.id.finish_line)
         button1 = findViewById(R.id.fail_win)
         var set_but = findViewById<Button>(R.id.setting_but)
         deets = findViewById(R.id.debug)
@@ -224,11 +223,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
         else {
-            val deltaX = ballCenterX - xCi
-            val deltaY = ballCenterY - yCi
-            var offset = 0
-            val ballR = ball.width/2
-            val obsR = obsIV.width/2
+            val deltaX = xCi - ballCenterX
+            val deltaY = yCi - ballCenterY
 
             if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
                 val dx = xVelo.toDouble()
@@ -236,7 +232,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val speed: Double = sqrt(dx.pow(2) + dy.pow(2))
                 val currentAngle: Double = atan2(dy, dx)
 
-                val reflecAngle: Double = atan2(xCi.toDouble() - ballCenterX, yCi.toDouble() - ballCenterY)
+                val reflecAngle: Double = atan2(deltaX.toDouble(), deltaY.toDouble())
                 val newAng: Double = 2*reflecAngle - currentAngle
 
                 xVelo = ((speed * cos(newAng))* obsDamp * COR).toFloat()
@@ -270,14 +266,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         return Pair(newCoord, newVelocity)
     }
 
-    fun Fdrag(velo: Float, Vmax: Float = 20F): Double {
-        val Cd = (1.96)/(90.945*(terminal_velo.toDouble().pow(2)))
-        val dir: Double
-        if (velo > 0) {
-            dir = 1.0
-        }
-        else {
-            dir = -1.0
+    fun Fdrag(velo: Float): Double {
+        val dir: Double = if (velo > 0)
+        {
+            -1.0
+        } else {
+            1.0
         }
         return (dir*((0.5) * (medium_density) * (velo.pow(2)) * 0.00001 * ((3.14* (diameter/2)/100).pow(2))).toFloat())
     }
@@ -296,22 +290,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 xAccel = (sides * grav_real).toFloat()
                 yAccel = (upDown * grav_real).toFloat()
 
-                val rightBounds = (meas.right - ball.width).toFloat()
-                val bottomBounds = (meas.bottom - ball.height).toFloat()
-
                 var FdragX = Fdrag(xVelo)
                 var FdragY = Fdrag(yVelo)
 
-                deets.text = FdragY.toString()
-
-                xVelo += xAccel - FdragX.toFloat()
-                yVelo += yAccel - FdragY.toFloat()
+                xVelo += (xAccel + FdragX.toFloat())
+                yVelo += (yAccel + FdragY.toFloat())
 
 
-//                colDetec(obs1)
-                for (obs in obstacles){
-                    colDetec(obs)
-                }
+                val rightBounds = (meas.right - ball.width).toFloat()
+                val bottomBounds = (meas.bottom - ball.height).toFloat()
 
 
 
