@@ -10,13 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-var shape = "circle"
-var len = 200
-var wid = 200
-var damp = 1.0
-var obstacle_created = 0
 
-var created_obs: MutableList<Array<Any>> = mutableListOf(arrayOf(250, 250, 0.8, "circle"))
 class ObstacleCreator : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {

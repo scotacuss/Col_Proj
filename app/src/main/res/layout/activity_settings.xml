@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,24 +8,35 @@
     android:background="@color/black">
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/main_but"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="340dp"
-
-        android:background="@drawable/cog" />
-
-
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal"
-        android:text="Settings"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Settings"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/main_but"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="80dp"
+
+            android:background="@drawable/cog" />
+    </LinearLayout>
 
 
 
@@ -361,7 +372,144 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_horizontal"
+        android:text="Obstacle Creater"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-</LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shape (circle/square): "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/obs_shape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter shape"
+            android:layout_gravity="center"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="text"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Length: "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/obs_len"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter length"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="number"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Width: "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/obs_width"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Width"
+            android:gravity="center"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="number"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dampener: "
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/obs_damp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter dampening"
+            android:textColorHint="#A6A3A3"
+            android:textColor="@color/white"
+            android:background="#305EAC"
+            android:textSize="20sp"
+            android:inputType="numberDecimal"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/creator"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:text="Create"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -13,10 +13,12 @@ import android.os.CountDownTimer
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.VISIBLE
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -38,6 +40,7 @@ import kotlin.math.tan
 
 
 var arbitrary = 1
+var cameraLock: Int = 2
 
 
 
@@ -48,10 +51,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var details_1: TextView
     private lateinit var meas: View
     private lateinit var mv: RelativeLayout
-    private lateinit var finLine: View
-    private lateinit var button1: Button
-    private lateinit var strtbut: Button
+    private lateinit var set_but: Button
+    private lateinit var cam_but: Button
+
     private lateinit var deets: TextView
+    private lateinit var scrollView: ScrollView
 
     private lateinit var timer: CountDownTimer
 
@@ -79,9 +83,31 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         ball = findViewById(R.id.pro_ball)
         meas = findViewById(R.id.measur)
         mv = findViewById(R.id.main_view)
-        button1 = findViewById(R.id.fail_win)
-        var set_but = findViewById<Button>(R.id.setting_but)
+        set_but = findViewById(R.id.setting_but)
         deets = findViewById(R.id.debug)
+        scrollView = findViewById(R.id.main_scroll_view)
+        cam_but = findViewById(R.id.camera_but)
+
+        cam_but.setOnClickListener {
+            cameraLock *= (-1)
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         set_but.setOnClickListener {
             val intent: Intent = Intent(this, Settings::class.java)
@@ -98,13 +124,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-        button1.setOnClickListener{
-            ballReset()
-            timeLeft = 5.00
-            timer.start()
-            button1.visibility = View.GONE
-        }
-        button1.visibility = View.GONE
+
 
 
         obstacles = mutableListOf(
@@ -144,52 +164,21 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 true
             }
         }
-        button1.bringToFront()
 
 
-        timer = object  : CountDownTimer(5400,100){
-            override fun onTick(millisUntilFinished: Long) {
-                details_1.text = timeLeft.toBigDecimal().setScale(1, RoundingMode.UP).toDouble().toString()
-                timeLeft -= 0.1
-                if (timeLeft < -0.1){
-                    timer.cancel()
-                    details_1.visibility = View.GONE
-                    ball.visibility = View.GONE
-                    button1.visibility = View.VISIBLE
-                }
-                if (ball.visibility == View.GONE){
-                    details_1.visibility = View.GONE
-                    timer.cancel()
-                }
-                else{
-                    details_1.visibility = View.VISIBLE
-                }
-            }
-            override fun onFinish() {
-                timeLeft = 5.00
-                timer.start()
-            }
-        }
+
         setUpSensorStuff()
     }
 
     fun ballReset(){
         ball.y = meas.y + ball.width
-        ball.x = (finLine.width/2).toFloat()
+        ball.x = (meas.width/2).toFloat()
         xVelo = 0F
         yVelo = 0F
         ball.visibility = VISIBLE
     }
 
-    override fun onStart() {
-        super.onStart()
-        timer.start()
-    }
 
-    override fun onStop() {
-        super.onStop()
-        timer.cancel()
-    }
 
 
     fun colDetec(obs: Array<Any>) {
@@ -223,8 +212,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
         else {
-            val deltaX = xCi - ballCenterX
-            val deltaY = yCi - ballCenterY
+            val deltaX = ballCenterX - xCi
+            val deltaY = ballCenterY - yCi
+            var offset = 0
+            val ballR = ball.width/2
+            val obsR = obsIV.width/2
 
             if (deltaX.pow(2) + deltaY.pow(2) < ((ball.width / 2)+(obsIV.width / 2)).toDouble().pow(2)) {
                 val dx = xVelo.toDouble()
@@ -232,7 +224,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val speed: Double = sqrt(dx.pow(2) + dy.pow(2))
                 val currentAngle: Double = atan2(dy, dx)
 
-                val reflecAngle: Double = atan2(deltaX.toDouble(), deltaY.toDouble())
+                val reflecAngle: Double = atan2(xCi.toDouble() - ballCenterX, yCi.toDouble() - ballCenterY)
                 val newAng: Double = 2*reflecAngle - currentAngle
 
                 xVelo = ((speed * cos(newAng))* obsDamp * COR).toFloat()
@@ -266,12 +258,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         return Pair(newCoord, newVelocity)
     }
 
-    fun Fdrag(velo: Float): Double {
-        val dir: Double = if (velo > 0)
-        {
-            -1.0
-        } else {
-            1.0
+    fun Fdrag(velo: Float, Vmax: Float = 20F): Double {
+        val Cd = (1.96)/(90.945*(terminal_velo.toDouble().pow(2)))
+        val dir: Double
+        if (velo > 0) {
+            dir = 1.0
+        }
+        else {
+            dir = -1.0
         }
         return (dir*((0.5) * (medium_density) * (velo.pow(2)) * 0.00001 * ((3.14* (diameter/2)/100).pow(2))).toFloat())
     }
@@ -290,15 +284,33 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 xAccel = (sides * grav_real).toFloat()
                 yAccel = (upDown * grav_real).toFloat()
 
+                val rightBounds = (meas.right - ball.width).toFloat()
+                val bottomBounds = (meas.bottom - ball.height).toFloat()
+
                 var FdragX = Fdrag(xVelo)
                 var FdragY = Fdrag(yVelo)
 
-                xVelo += (xAccel + FdragX.toFloat())
-                yVelo += (yAccel + FdragY.toFloat())
+                deets.text = FdragY.toString()
+
+                xVelo += xAccel - FdragX.toFloat()
+                yVelo += yAccel - FdragY.toFloat()
 
 
-                val rightBounds = (meas.right - ball.width).toFloat()
-                val bottomBounds = (meas.bottom - ball.height).toFloat()
+//                colDetec(obs1)
+                for (obs in obstacles){
+                    colDetec(obs)
+                }
+
+                if (ball.y > 400 && cameraLock > 0){
+                    scrollView.scrollY = ball.y.toInt()-800
+                }
+
+                set_but.y = (scrollView.scrollY + 20 ).toFloat()
+                cam_but.y = (scrollView.scrollY + 20 ).toFloat()
+
+
+
+
 
 
 

@@ -2,80 +2,136 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_view"
+    android:id="@+id/main_scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#494949"
+    android:scrollbarAlwaysDrawHorizontalTrack="true"
+    android:scrollbarSize="30dp"
     tools:context=".MainActivity">
 
+        <RelativeLayout
+            android:id="@+id/main_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="2000dp">
+                <View
+                    android:id="@+id/measur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1390dp"
+                    android:background="#80676767"
+                    android:gravity="center" />
 
+                <TextView
+                    android:id="@+id/deets_1"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:hint="5.00"
+                    android:alpha="0"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="1dp" />
 
-        <View
-            android:id="@+id/measur"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#80676767"
-            android:gravity="center" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/setting_but"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="310dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/cog" />
 
-
-
-
-        <TextView
-            android:id="@+id/deets_1"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:hint="5.00"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="1dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/setting_but"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="340dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/cog" />
-
-        <Button
-            android:id="@+id/fail_win"
-            android:layout_width="250dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="83dp"
-            android:layout_marginTop="300dp"
-            android:background="#000000"
-            android:gravity="center"
-            android:hint="Retry?"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="35dp" />
-
-        <TextView
-            android:id="@+id/debug"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:alpha="1"
-            android:gravity="center_horizontal"
-            android:hint="5.00"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="15dp"
-            />
-
-        <ImageView
-            android:id="@+id/pro_ball"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:src="@drawable/ball" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/camera_but"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="270dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/camera" />
 
 
-    </RelativeLayout>
 
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h"
+                            />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_marginTop="-30dp"
+                            android:layout_height="370dp"
+                            android:src="@drawable/fnsh_line_h" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/debug"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:alpha="0"
+                    android:gravity="center_horizontal"
+                    android:hint="5.00"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hahaha"
+                    android:layout_marginLeft="40dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"/>
+
+                <ImageView
+                    android:id="@+id/pro_ball"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:src="@drawable/ball" />
+
+        </RelativeLayout>
 </ScrollView>
+
