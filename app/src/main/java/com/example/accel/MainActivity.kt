@@ -2,7 +2,6 @@ package com.example.accel
 
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -13,7 +12,6 @@ import android.os.CountDownTimer
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.VISIBLE
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
@@ -22,9 +20,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import java.math.RoundingMode
 import kotlin.math.absoluteValue
-import kotlin.math.asin
 import kotlin.math.atan
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -33,10 +29,6 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
-import kotlin.math.tan
-
-
-
 
 
 var arbitrary = 1
@@ -61,13 +53,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var obstacles: MutableList<Array<Any>>
 
-    var timeLeft: Double = 5.00
     private var xAccel = 0F
     private var yAccel = 0F
     var xVelo = 0F
     var yVelo = 0F
     val terminal_velo = 40
-    val dampner = 0.8F // coefficient of restitution
 
 
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
@@ -258,16 +248,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         return Pair(newCoord, newVelocity)
     }
 
-    fun Fdrag(velo: Float, Vmax: Float = 20F): Double {
-        val Cd = (1.96)/(90.945*(terminal_velo.toDouble().pow(2)))
-        val dir: Double
-        if (velo > 0) {
-            dir = 1.0
-        }
-        else {
-            dir = -1.0
-        }
-        return (dir*((0.5) * (medium_density) * (velo.pow(2)) * 0.00001 * ((3.14* (diameter/2)/100).pow(2))).toFloat())
+    fun FdragAccel(Xvelo: Float, Yvelo: Float): Double {
+        val totalSpeed = sqrt(Xvelo.pow(2) + Yvelo.pow(2))
+        val ballMass = ((4/3)*(3.14)*((diameter/2).toFloat().pow(3)))* ball_density
+        val force =  (((0.5) * (medium_density) * (totalSpeed.pow(2))  * ((3.14* (diameter/2)/100).pow(2))).toDouble())
+        val accel = force/ballMass
+        return accel
     }
 
     @SuppressLint("SetTextI18n", "ResourceType")
@@ -286,14 +272,21 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
                 val rightBounds = (meas.right - ball.width).toFloat()
                 val bottomBounds = (meas.bottom - ball.height).toFloat()
+                
+                val speed = sqrt(xVelo.pow(2) + yVelo.pow(2))
 
-                var FdragX = Fdrag(xVelo)
-                var FdragY = Fdrag(yVelo)
 
-                deets.text = FdragY.toString()
+                var dragAccel = FdragAccel(yVelo,xVelo)
+                var velAng = atan(-yVelo/xVelo)
+                val xDrag = if (xVelo < 0)  (cos(velAng) * dragAccel) else (-1*(cos(velAng) * dragAccel))
 
-                xVelo += xAccel - FdragX.toFloat()
-                yVelo += yAccel - FdragY.toFloat()
+                val yDrag = if (yVelo < 0) (sin(velAng) * dragAccel) else (-1*(sin(velAng) * dragAccel))
+
+
+                details_1.text = (sin(velAng) * dragAccel).toString()
+
+                xVelo += xAccel
+                yVelo += yAccel
 
 
 //                colDetec(obs1)
@@ -307,6 +300,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
                 set_but.y = (scrollView.scrollY + 20 ).toFloat()
                 cam_but.y = (scrollView.scrollY + 20 ).toFloat()
+                details_1.y = (scrollView.scrollY + 20 ).toFloat()
 
 
 
