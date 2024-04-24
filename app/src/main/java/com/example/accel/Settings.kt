@@ -20,7 +20,7 @@ var medium_density: Double = 5.96*(10.0.pow(-27))
 var medium_gravity: Double = 1.62
 
 var ball_preset: String = "rubber"
-var ball_density: Double = 1522.0
+var ball_density: Double = 1.5220
 var COR: Double = 0.9
 var diameter: Int = 100
 var ball_colour: String = "black"
