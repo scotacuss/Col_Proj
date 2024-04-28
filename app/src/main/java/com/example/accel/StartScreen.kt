@@ -24,11 +24,7 @@ class StartScreen : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val obs_but = findViewById<Button>(R.id.obs_creator)
-        obs_but.setOnClickListener {
-            val intent: Intent = Intent(this, ObstacleCreator::class.java)
-            startActivity(intent)
-        }
+
 
 
     }

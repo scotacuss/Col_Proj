@@ -15,30 +15,261 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-                <View
+                <ImageView
                     android:id="@+id/measur"
+                    android:src="@drawable/stars5"
+                    android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="1390dp"
+                    android:layout_height="wrap_content"
                     android:background="#80676767"
                     android:gravity="center" />
 
-                <TextView
+<!--                <ImageView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:src="@drawable/stars5"-->
+<!--                    android:layout_height="1390dp"-->
+<!--                    android:background="#80676767"-->
+<!--                    android:gravity="center" />-->
+
+                <LinearLayout
                     android:id="@+id/deets_1"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:hint="5.00"
-                    android:layout_marginLeft="30dp"
-                    android:alpha="1"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="15dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Vx: "
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="40dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/deets_xVelo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:hint="5.00"
+                                    android:layout_marginTop="10dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Vy: "
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/deets_yVelo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:hint="5.00"
+                                    android:layout_marginTop="10dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                        </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Vt: "
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="40dp"
+                            android:alpha="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/deets_tVelo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:hint="5.00"
+                            android:layout_marginTop="5dp"
+                            android:alpha="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp" />
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deets_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Ax: "
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="40dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/deets_xAccel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:hint="5.00"
+                                    android:layout_marginTop="10dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Ay: "
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/deets_yAccel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:hint="5.00"
+                                    android:layout_marginTop="10dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                        </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="At: "
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="40dp"
+                            android:alpha="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/deets_tAccel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:hint="5.00"
+                            android:layout_marginTop="5dp"
+                            android:alpha="1"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp" />
+
+                </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Fd: "
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginLeft="40dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/deets_fdrag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:hint="5.00"
+                                    android:layout_marginTop="5dp"
+                                    android:alpha="1"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="15dp" />
+
+                        </LinearLayout>
+
+
+
+
+
+
+
+                </LinearLayout>
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/setting_but"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="310dp"
+                    android:layout_marginLeft="330dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/cog" />
 
@@ -46,7 +277,7 @@
                     android:id="@+id/camera_but"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="270dp"
+                    android:layout_marginLeft="280dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/camera" />
 
@@ -73,9 +304,10 @@
                             android:src="@drawable/fnsh_line_h" />
                         <ImageView
                             android:layout_width="30dp"
-                            android:layout_marginTop="-30dp"
+                            android:layout_marginTop="-310dp"
                             android:layout_height="370dp"
                             android:src="@drawable/fnsh_line_h" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -100,22 +332,13 @@
                             android:src="@drawable/fnsh_line_h" />
                         <ImageView
                             android:layout_width="30dp"
-                            android:layout_marginTop="-30dp"
+                            android:layout_marginTop="-310dp"
                             android:layout_height="370dp"
                             android:src="@drawable/fnsh_line_h" />
+
                 </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/debug"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:alpha="0"
-                    android:gravity="center_horizontal"
-                    android:hint="5.00"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
